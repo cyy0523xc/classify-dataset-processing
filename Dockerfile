@@ -23,6 +23,8 @@ COPY ./requirements.txt /
 RUN pip3 --no-cache-dir install -r /requirements.txt \
     && rm -f /requirements.txt
 
+RUN pip3 install numpy pandas
+
 # 终端设置
 # 默认值是dumb，这时在终端操作时可能会出现：terminal is not fully functional
 ENV LANG C.UTF-8
