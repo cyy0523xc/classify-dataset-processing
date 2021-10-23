@@ -38,13 +38,14 @@ app.add_middleware(
 # from common.connections import init_redis
 # init_redis('192.168.1.242')   # 配置redis host
 
-# 加载模块路由
-# from test_module.router import router as test_router
-# app.include_router(test_router, prefix="/test", tags=["测试模块"])
+from dataset_module.router import router as dataset_router
+app.include_router(dataset_router, prefix="/dataset", tags=["数据集模块"])
 
-# 加载验证码模块
-# from captcha_module.router import router as captcha_router
-# app.include_router(captcha_router, prefix="/captcha", tags=["验证码模块"])
+from keyword_module.router import router as keyword_router
+app.include_router(keyword_router, prefix="/keyword", tags=["关键词模块"])
+
+from metrics_module.router import router as metrics_router
+app.include_router(metrics_router, prefix="/metrics", tags=["评估模块"])
 
 
 @app.get("/version", summary='获取系统版本号',
