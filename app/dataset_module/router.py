@@ -22,8 +22,6 @@ async def test_api():
     return {'message': 'ok'}
 
 
-
-@router.post("/filter", summary='过滤目标数据集',)
 async def filter_api():
     """过滤目标数据集\n
     根据标签进行过滤
