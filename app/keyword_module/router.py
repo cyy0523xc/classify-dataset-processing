@@ -41,5 +41,4 @@ async def analyse_api(
     return {
         "person_count": person_count,
         "machine_count": machine_count,
-        "rate": person_count / machine_count if machine_count else 0,
     }
