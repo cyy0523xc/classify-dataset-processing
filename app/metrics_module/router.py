@@ -5,11 +5,10 @@
 # Email: cyy0523xc@gmail.com
 # Created Time: 2021-10-23
 # from typing import Dict
-import codecs
+import os
 import pandas as pd
 from fastapi import APIRouter, Form, UploadFile, File
-# from fastapi import Depends, HTTPException
-from schema import MessageResp     # 通用schema
+from fastapi import HTTPException, status
 from settings import person_field, machine_field
 
 router = APIRouter(
@@ -37,9 +36,19 @@ async def crosstab_api(
     with open(tmp_filename, 'wb') as f:
         f.write(contents)
 
-    df = pd.read_csv(tmp_filename)
+    try:
+        df = pd.read_csv(tmp_filename)
+    except:
+        os.remove(tmp_filename)
+        raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE,
+                            detail="读取csv文件内容错误，请确定是否为正常的csv文件")
     # 计算机器预测的准确率
-    data = pd.crosstab(df[person_fieldname], df[machine_fieldname])
+    os.remove(tmp_filename)
+    try:
+        data = pd.crosstab(df[person_fieldname], df[machine_fieldname])
+    except:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                            detail="请确定字段名是否是正确的：%s, %s" % (person_fieldname, machine_fieldname))
     data = data.to_dict()
     metrics = {}
     for key, vals in data.items():
