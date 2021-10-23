@@ -7,8 +7,8 @@
 from settings import text_field
 
 
-def get_count_query(terms_query: dict = None, string_query: dict = None) -> dict:
-    query_dsl = {
+def init_query():
+    return {
         "query": {
             "bool": {
                 "must": [
@@ -16,11 +16,12 @@ def get_count_query(terms_query: dict = None, string_query: dict = None) -> dict
             }
         }
     }
-    if terms_query:
-        query_dsl['query']['bool']['must'].append(terms_query)
-    if string_query:
-        query_dsl['query']['bool']['must'].append(string_query)
-    return query_dsl
+
+
+def add_child_query(query: dict = None, child: dict = None) -> dict:
+    if child:
+        query['query']['bool']['must'].append(child)
+    return query
 
 
 def get_terms_query(tag_field: str, values: list) -> dict:

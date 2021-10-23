@@ -8,7 +8,7 @@
 # from typing import Optional
 from fastapi import APIRouter, Form
 # from fastapi import Depends, HTTPException
-from .keywords import check_keyword
+from .keywords import check_keyword, check_keyword_and
 
 router = APIRouter(
     # dependencies=[Depends(get_token_header)],
@@ -21,6 +21,7 @@ async def analyse_api(
     keyword: str = Form(..., description='需要验证的关键词'),
     person_tags: str = Form(..., description='人工标注的标签，使用逗号进行分隔'),
     machine_tags: str = Form(..., description='机器识别标注的标签，使用逗号进行分隔'),
+    is_and: bool = Form(False, description='人工标注标签和机器预测结果标签是否进行and查询'),
 ):
     """验证关键词的区分效果
     """
@@ -29,6 +30,11 @@ async def analyse_api(
     machine_tags = machine_tags.replace('，', ',')
     person_tags = [tag.strip() for tag in person_tags.split(',')]
     machine_tags = [tag.strip() for tag in machine_tags.split(',')]
+    if is_and:
+        count = check_keyword_and(keyword, person_tags, machine_tags)
+        return {
+            "count": count,
+        }
     person_count, machine_count = check_keyword(keyword, person_tags, machine_tags)
     return {
         "person_count": person_count,
