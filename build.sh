@@ -1,0 +1,1 @@
+docker build -t classify-dataset-processing .
