@@ -8,20 +8,12 @@
 # from typing import Optional
 from fastapi import APIRouter, Form
 # from fastapi import Depends, HTTPException
-from schema import MessageResp     # 通用schema
 from .keywords import check_keyword
 
 router = APIRouter(
     # dependencies=[Depends(get_token_header)],
     # responses={404: {"description": "Not found"}},
 )
-
-
-@router.get("/", summary='模块测试API',
-            response_model=MessageResp)
-async def test_api():
-    """模块测试API"""
-    return {'message': 'ok'}
 
 
 @router.post("/analyse", summary='验证关键词的区分效果')   # , response_model=MessageResp)

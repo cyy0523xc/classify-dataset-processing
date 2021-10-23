@@ -18,12 +18,6 @@ router = APIRouter(
 )
 
 
-@router.get("/", summary='模块测试API', response_model=MessageResp)
-async def test_api():
-    """模块测试API"""
-    return {'message': 'ok'}
-
-
 @router.post("/crosstab", summary='计算模型预测效果')
 async def crosstab_api(
     file: UploadFile = File(..., title="上传的数据文件", description="需要上传的数据文件"),
