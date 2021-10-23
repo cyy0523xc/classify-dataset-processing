@@ -20,13 +20,15 @@ router = APIRouter(
 
 @router.post("/crosstab", summary='计算模型预测效果')
 async def crosstab_api(
-    file: UploadFile = File(..., title="上传的数据文件", description="需要上传的数据文件"),
+    file: UploadFile = File(..., title="上传的数据文件", description="需要上传的数据文件，支持CSV文件"),
     person_fieldname: str = Form(person_field, description="人工标注的字段名称"),
     machine_fieldname: str = Form(machine_field, description="机器预测标注的字段名称"),
 ) -> dict:
     """计算模型预测效果指标:\n
     1. 准确率\n
-    2. 召回率
+    2. 召回率\n
+
+    上传的数据文件可以只包含人工标注的字段和机器预测结果字段，暂时只支持CSV文件。
     """
     person_fieldname = person_fieldname.strip()
     machine_fieldname = machine_fieldname.strip()
